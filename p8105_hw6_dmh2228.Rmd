@@ -1,0 +1,8 @@
+---
+title: "P8105 Homework 6"
+author: "Diana Hernandez"
+date: "2023-12-02"
+output: github_document
+---
+
+
