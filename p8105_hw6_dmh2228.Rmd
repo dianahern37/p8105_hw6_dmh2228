@@ -5,4 +5,11 @@ date: "2023-12-02"
 output: github_document
 ---
 
+Load libraries and settings
+
+```{r}
+library(tidyverse)
+
+set.seed(1)
+```
 
