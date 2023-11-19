@@ -126,3 +126,11 @@ weather_df |>
   )
 ```
 
+# Problem 3
+
+Import dataset.
+
+```{r}
+birthweight = read_csv("./data/birthweight.csv")
+```
+
