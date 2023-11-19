@@ -138,27 +138,35 @@ Data wrangling of `birthweight` dataset.
 
 Models
 
-One using mother's age at delivery (in years) and average number of cigarettes smoked per day during pregnancy as predictors (main effects only). This model is based on factors that underly birthweight.
+Model 1: One using mother's age at delivery (in years) and average number of cigarettes smoked per day during pregnancy as predictors (main effects only). This model is based on factors that underlie birth weight.
 
 ```{r}
-birthweight |>
-  lm(bwt ~ momage + smoken, data = _) |>
-  broom::tidy()
+model1_fit = lm(bwt ~ momage + smoken, data = birthweight) 
+
+birthweight |> 
+  select(bwt, momage, smoken) |>
+  modelr::add_residuals(model1_fit) |> 
+  modelr::add_predictions(model1_fit) |>
+  ggplot(aes(x = pred, y = resid)) +
+  geom_violin() +
+  labs(
+    title = "Residual vs fitted values",
+    x = "Fitted values",
+    y = "Residuals"
+  )
 ```
 
-One using length at birth and gestational age as predictors (main effects only).
+Model 2: One using length at birth and gestational age as predictors (main effects only).
 
 ```{r}
-birthweight |>
-  lm(bwt ~ blength + gaweeks, data = _) |>
-  broom::tidy()
+model2_fit = 
+  lm(bwt ~ blength + gaweeks, data = birthweight)
 ```
 
-One using head circumference, length, sex, and all interactions (including the three-way interaction) between these.
+Model 3: One using head circumference, length, sex, and all interactions (including the three-way interaction) between these.
 
 ```{r}
-birthweight |>
-  lm(bwt ~ bhead + blength + babysex + bhead*blength*babysex, data = _) |>
-  broom::tidy()
+model3_fit = 
+  lm(bwt ~ bhead + blength + babysex + bhead*blength*babysex, data = birthweight) 
 ```
 
