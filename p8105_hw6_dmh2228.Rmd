@@ -134,3 +134,31 @@ Import dataset.
 birthweight = read_csv("./data/birthweight.csv")
 ```
 
+Data wrangling of `birthweight` dataset.
+
+Models
+
+One using mother's age at delivery (in years) and average number of cigarettes smoked per day during pregnancy as predictors (main effects only). This model is based on factors that underly birthweight.
+
+```{r}
+birthweight |>
+  lm(bwt ~ momage + smoken, data = _) |>
+  broom::tidy()
+```
+
+One using length at birth and gestational age as predictors (main effects only).
+
+```{r}
+birthweight |>
+  lm(bwt ~ blength + gaweeks, data = _) |>
+  broom::tidy()
+```
+
+One using head circumference, length, sex, and all interactions (including the three-way interaction) between these.
+
+```{r}
+birthweight |>
+  lm(bwt ~ bhead + blength + babysex + bhead*blength*babysex, data = _) |>
+  broom::tidy()
+```
+
