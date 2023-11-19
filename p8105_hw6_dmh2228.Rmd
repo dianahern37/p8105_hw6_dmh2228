@@ -102,3 +102,27 @@ weather_df =
   select(name, id, everything())
 ```
 
+Bootstrapping SLR with `tmax` as the response with `tmin` and `prcp` as the predictors.
+
+```{r}
+weather_df |> 
+  modelr::bootstrap(n = 5000) |> 
+  mutate(
+    models = map(strap, \(df) lm(tmax ~ tmin + prcp, data = df)),
+    results = map(models, broom::tidy),
+    rsquared = map(models, broom::glance))|> 
+  select(results, rsquared) |> 
+  unnest(rsquared) |>
+  select(results, r.squared) |>
+  unnest(results) |>
+  select(term, estimate, r.squared) |>
+  mutate(term = as.factor(term)) |>
+  pivot_wider(
+    names_from = "term", 
+    values_from = "estimate",
+    names_prefix = "beta_") |>
+  mutate(
+    log_beta1beta2 = log(beta_tmin*beta_prcp)
+  )
+```
+
