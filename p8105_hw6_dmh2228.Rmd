@@ -172,6 +172,11 @@ birthweight = read_csv("./data/birthweight.csv")
 
 Data wrangling of `birthweight` dataset.
 
+```{r}
+birthweight |> 
+  is.na()
+```
+
 Models
 
 Model 1: One using mother's age at delivery (in years) and average number of cigarettes smoked per day during pregnancy as predictors (main effects only). This model is based on factors that underlie birth weight.
@@ -242,7 +247,13 @@ cv_df |>
     values_to = "rmse",
     names_prefix = "rmse_") |> 
   mutate(model = fct_inorder(model)) |> 
-  ggplot(aes(x = model, y = rmse)) + geom_violin()
+  ggplot(aes(x = model, y = rmse)) + 
+  geom_violin() +
+  labs(
+    title = "Prediction error distribution of each model",
+    x = "Model",
+    y = "RMSE"
+  )
 ```
 
 Based on these results, Model 1 is not optimal despite taking account factors that underlie birthweight. Model 3 is the most optimal. The lower the RMSE, the better the model is.
