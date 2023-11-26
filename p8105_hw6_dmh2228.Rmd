@@ -107,7 +107,8 @@ weather_df =
 Bootstrapping SLR with `tmax` as the response with `tmin` and `prcp` as the predictors.
 
 ```{r}
-weather_df |> 
+bootstrap_df =
+  weather_df |> 
   modelr::bootstrap(n = 5000) |> 
   mutate(
     models = map(strap, \(df) lm(tmax ~ tmin + prcp, data = df)),
@@ -124,8 +125,23 @@ weather_df |>
     values_from = "estimate",
     names_prefix = "beta_") |>
   mutate(
-    log_beta1beta2 = log(beta_tmin*beta_prcp)
+    log_beta1beta2 = log(beta_tmin*beta_prcp),
+    strap_number = row_number()
   )
+```
+
+Plot the distributions of the two estimates.
+
+```{r}
+bootstrap_df |>
+  group_by(log_beta1beta2) |>
+  ggplot(aes(x = strap_number, y = log_beta1beta2)) +
+  geom_point()
+
+bootstrap_df |>
+  group_by(r.squared) |>
+  ggplot(aes(x = strap_number, y = r.squared)) +
+  geom_point() 
 ```
 
 # Problem 3
