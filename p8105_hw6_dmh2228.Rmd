@@ -172,7 +172,7 @@ birthweight = read_csv("./data/birthweight.csv")
 
 Data wrangling of `birthweight` dataset.
 
-```{r}
+```{r include = FALSE}
 birthweight |> 
   is.na()
 ```
